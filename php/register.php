@@ -165,7 +165,7 @@ function otp_verify ($curl, $phone, $otp_code, $country, $header) {
 	if($status==1) {
 		return $token;
 	} else {
-		print "[i] OTP Verify: ".$phone." | Failed.\n";
+		print "[i] OTP Verify: ".$phone." | Failed. ".$json->meta->message."\n";
 		return false;
 	}
 }
@@ -220,7 +220,7 @@ function register ($curl, $phone, $country, $first_name, $last_name, $gender, $r
 	if(isset($id)) {
 		return $json;
 	} else {
-		print "[i] Register: ".$phone." | Failed.\n";
+		print "[i] Register: ".$phone." | Failed. ".$json->meta->message."\n";
 		return false;
 	}
 }
@@ -259,6 +259,7 @@ foreach ($user as $value) {
 		goto user;
 	} else {
 		input:
+		echo "\n";
 		echo "Enter Country [1/62] :";
 		$country = trim(fgets(STDIN));
 		if (strtolower($country)=='z') {
@@ -302,11 +303,10 @@ foreach ($user as $value) {
 						goto username;
 					} else {
 
-						regsiter:
 						$register = register ($curl, $phone, $country, $first_name, $last_name, $gender, $reff, $token, $username, $header);
 
 						if($register==false) {
-							goto regsiter;
+							goto input;
 						} else {
 
 							$user_id = $register->data->detail->id;
