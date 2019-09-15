@@ -232,9 +232,7 @@ $Authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNpbmVwb
 $header = [
 	'Host: api.cinepoint.id',
 	'Authorization: Bearer '.$Authorization,
-	'Content-Type: application/json; charset=UTF-8',
-	'Accept-Encoding: gzip',
-	'User-Agent: okhttp/3.12.1'
+	'Content-Type: application/json; charset=UTF-8'
 ];
 
 // $reff = "II026815";
