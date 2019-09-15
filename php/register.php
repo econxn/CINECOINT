@@ -296,7 +296,7 @@ foreach ($user as $value) {
 					$token = $otp_verify;
 
 					username:
-					$username = strtolower($first_name).rand(123,999);
+					$username = strtolower($first_name).rand(100,9999);
 
 					$check_username = check_username ($curl, $username, $header);
 					if($check_username==false) {
