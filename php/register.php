@@ -87,20 +87,13 @@ function randomuser($curl) {
 	return $json;
 }
 
-function check ($curl, $phone, $country, $Authorization) {
+function check ($curl, $phone, $country, $header) {
 
 	if($country=="62") {
 		$country_id = "Wpmbk5XezJ";
 	} elseif($country=="1") {
 		$country_id = "yJrb28JeWL";
 	}
-
-	$header = [
-		'Authorization: Bearer '.$Authorization,
-		'Content-Type: application/json; charset=UTF-8',
-		'Accept-Encoding: gzip',
-		'User-Agent: okhttp/3.12.1'
-	];
 
 	$field =
 	'{
@@ -121,20 +114,13 @@ function check ($curl, $phone, $country, $Authorization) {
 	}
 }
 
-function request_otp ($curl, $phone, $country, $Authorization) {
+function request_otp ($curl, $phone, $country, $header) {
 
 	if($country=="62") {
 		$country_id = "Wpmbk5XezJ";
 	} elseif($country=="1") {
 		$country_id = "yJrb28JeWL";
 	}
-
-	$header = [
-		'Authorization: Bearer '.$Authorization,
-		'Content-Type: application/json; charset=UTF-8',
-		'Accept-Encoding: gzip',
-		'User-Agent: okhttp/3.12.1'
-	];
 
 	$field =
 	'{
@@ -155,20 +141,13 @@ function request_otp ($curl, $phone, $country, $Authorization) {
 	}
 }
 
-function otp_verify ($curl, $phone, $otp_code, $country, $Authorization) {
+function otp_verify ($curl, $phone, $otp_code, $country, $header) {
 
 	if($country=="62") {
 		$country_id = "Wpmbk5XezJ";
 	} elseif($country=="1") {
 		$country_id = "yJrb28JeWL";
 	}
-
-	$header = [
-		'Authorization: Bearer '.$Authorization,
-		'Content-Type: application/json; charset=UTF-8',
-		'Accept-Encoding: gzip',
-		'User-Agent: okhttp/3.12.1'
-	];
 
 	$field =
 	'{
@@ -191,14 +170,7 @@ function otp_verify ($curl, $phone, $otp_code, $country, $Authorization) {
 	}
 }
 
-function check_username ($curl, $username, $Authorization) {
-
-	$header = [
-		'Authorization: Bearer '.$Authorization,
-		'Content-Type: application/json; charset=UTF-8',
-		'Accept-Encoding: gzip',
-		'User-Agent: okhttp/3.12.1'
-	];
+function check_username ($curl, $username, $header) {
 
 	$field =
 	'{
@@ -218,21 +190,13 @@ function check_username ($curl, $username, $Authorization) {
 	}
 }
 
-function register ($curl, $phone, $country, $first_name, $last_name, $gender, $reff, $token, $username, $Authorization) {
+function register ($curl, $phone, $country, $first_name, $last_name, $gender, $reff, $token, $username, $header) {
 
 	if($country=="62") {
 		$country_id = "Wpmbk5XezJ";
 	} elseif($country=="1") {
 		$country_id = "yJrb28JeWL";
 	}
-
-	$header = [
-		'Host: api.cinepoint.id',
-		'Authorization: Bearer '.$Authorization,
-		'Content-Type: application/json; charset=UTF-8',
-		'Accept-Encoding: gzip',
-		'User-Agent: okhttp/3.12.1'
-	];
 
 	$field =
 	'{
@@ -265,7 +229,21 @@ function register ($curl, $phone, $country, $first_name, $last_name, $gender, $r
 $curl = new curl();
 
 $Authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNpbmVwb2ludCIsInBhc3N3b3JkIjoiJSVjaW5lcG9pbnQlJSIsImlhdCI6MTU2ODUyNTQ2NiwiZXhwIjoxNjY4NTI1MzY2LCJzdWIiOiJjaW5lcG9pbnQuY29tIn0.OsocUQzE-NKq__ehn98Jd9MB2XvOU5O9OMBQkGbR7mI";
-$reff = "II026815";
+$header = [
+	'Host: api.cinepoint.id',
+	'Authorization: Bearer '.$Authorization,
+	'Content-Type: application/json; charset=UTF-8',
+	'Accept-Encoding: gzip',
+	'User-Agent: okhttp/3.12.1'
+];
+
+// $reff = "II026815";
+echo "Enter REFFERAL Code  :";
+$reff = trim(fgets(STDIN));
+if (strtolower($reff)=='z') {
+	echo "\n";
+	die();
+}
 
 user:
 $user = randomuser($curl);
@@ -294,11 +272,12 @@ foreach ($user as $value) {
 		  die();
 		}
 
+
 		check:
-		$check = check ($curl, $phone, $country, $Authorization);
+		$check = check ($curl, $phone, $country, $header);
 		if($check==true) {
 			request_otp:
-			$request_otp = request_otp ($curl, $phone, $country, $Authorization);
+			$request_otp = request_otp ($curl, $phone, $country, $header);
 			if($request_otp==true) {
 				otp:
 				echo "Enter OTP Code  :";
@@ -308,7 +287,7 @@ foreach ($user as $value) {
 					die();
 				}
 
-				$otp_verify = otp_verify ($curl, $phone, $otp_code, $country, $Authorization);
+				$otp_verify = otp_verify ($curl, $phone, $otp_code, $country, $header);
 				if($otp_verify==false) {
 					goto otp;
 				} else {
@@ -318,13 +297,13 @@ foreach ($user as $value) {
 					username:
 					$username = strtolower($first_name).rand(123,999);
 
-					$check_username = check_username ($curl, $username, $Authorization);
+					$check_username = check_username ($curl, $username, $header);
 					if($check_username==false) {
 						goto username;
 					} else {
 
 						regsiter:
-						$register = register ($curl, $phone, $country, $first_name, $last_name, $gender, $reff, $token, $username, $Authorization);
+						$register = register ($curl, $phone, $country, $first_name, $last_name, $gender, $reff, $token, $username, $header);
 
 						if($register==false) {
 							goto regsiter;
