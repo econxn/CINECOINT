@@ -109,7 +109,7 @@ function check ($curl, $phone, $country, $header) {
 	if($status==0) {
 		return true;
 	} else {
-		print "     Checking: ".$phone." | sudah terdaftar.\n";
+		print "[i] Checking: ".$phone." | sudah terdaftar.\n";
 		return false;
 	}
 }
@@ -136,7 +136,7 @@ function request_otp ($curl, $phone, $country, $header) {
 	if($status==1) {
 		return true;
 	} else {
-		print "     Sent OTP: ".$phone." | Failed.\n";
+		print "[i] Sent OTP: ".$phone." | Failed. ".$json->meta->message."\n";
 		return false;
 	}
 }
@@ -165,7 +165,7 @@ function otp_verify ($curl, $phone, $otp_code, $country, $header) {
 	if($status==1) {
 		return $token;
 	} else {
-		print "     OTP Verify: ".$phone." | Failed.\n";
+		print "[i] OTP Verify: ".$phone." | Failed.\n";
 		return false;
 	}
 }
@@ -185,7 +185,7 @@ function check_username ($curl, $username, $header) {
 	if($status==0) {
 		return true;
 	} else {
-		print "     Check Username: ".$phone." | Not Available.\n";
+		print "[i] Check Username: ".$phone." | Not Available.\n";
 		return false;
 	}
 }
@@ -220,7 +220,7 @@ function register ($curl, $phone, $country, $first_name, $last_name, $gender, $r
 	if(isset($id)) {
 		return $json;
 	} else {
-		print "     Register: ".$phone." | Failed.\n";
+		print "[i] Register: ".$phone." | Failed.\n";
 		return false;
 	}
 }
@@ -258,7 +258,7 @@ foreach ($user as $value) {
 	if(strlen($first_name)<3) {
 		goto user;
 	} else {
-
+		input:
 		echo "Enter Country [1/62] :";
 		$country = trim(fgets(STDIN));
 		if (strtolower($country)=='z') {
@@ -318,10 +318,10 @@ foreach ($user as $value) {
 					}
 				}
 			}	else {
-				goto request_otp;
+				goto input;
 			}
 		} else {
-			goto check;
+			goto input;
 		}
 	}
 }
